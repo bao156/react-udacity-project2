@@ -12,6 +12,10 @@ import LeaderBoard from "../components/leader-board-table";
 import QuestionsBoard from "../components/questions-board";
 import { fetchAllUser } from "../store/actions/users";
 import { fetchAllQuestions } from "../store/actions/questions";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 export const HOME_VALUE = "/dashboard";
 export const ADD_PATH = HOME_VALUE + "/add";
@@ -19,8 +23,8 @@ export const LEADER_BOARD_PATH = HOME_VALUE + "/leaderboard";
 export const QUESTION_PATH = HOME_VALUE + "/questions";
 function MainPage() {
   const [value, setValue] = React.useState("/dashboard");
-  const [newQuestions, setNewQuestions] = React.useState([]);
-  const [doneQuestions, setDoneQuestions] = React.useState([]);
+  const [questions, setQuestions] = React.useState([]);
+  const [isAnsweredQuestion, setIsAnsweredQuestion] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.loggedInUser);
@@ -55,15 +59,14 @@ function MainPage() {
     let isMounted = false;
     function getQuestions() {
       if (!isMounted && listOfQuestions) {
-        setNewQuestions(
-          listOfQuestions.filter((question) => {
-            return !listOfDoneQuestionIds.includes(question.id);
-          })
-        );
-        setDoneQuestions(
-          listOfQuestions.filter((question) => {
-            return listOfDoneQuestionIds.includes(question.id);
-          })
+        setQuestions(
+          isAnsweredQuestion === true
+            ? listOfQuestions.filter((question) => {
+                return listOfDoneQuestionIds.includes(question.id);
+              })
+            : listOfQuestions.filter((question) => {
+                return !listOfDoneQuestionIds.includes(question.id);
+              })
         );
       }
     }
@@ -72,10 +75,13 @@ function MainPage() {
       isMounted = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listOfQuestions, value]);
+  }, [listOfQuestions, value, isAnsweredQuestion]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+  const handleSelectionChange = (event) => {
+    setIsAnsweredQuestion(event.target.value);
   };
   const handleShowingDetail = (id) => {
     navigate("/questions/" + id);
@@ -129,17 +135,25 @@ function MainPage() {
         </Box>
         <TabPanel value={HOME_VALUE} style={{ padding: "60px" }}>
           <>
-            {newQuestions && (
+            <FormControl width="55%">
+              <InputLabel id="demo-simple-select-label">Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={isAnsweredQuestion}
+                label="ty"
+                onChange={handleSelectionChange}
+              >
+                <MenuItem value={false}>Unanswered Question</MenuItem>
+                <MenuItem value={true}>Answered Question</MenuItem>
+              </Select>
+            </FormControl>
+            {questions && (
               <QuestionsBoard
-                titleOfBoard="New Questions"
-                listOfQuestions={newQuestions}
-                handleShowingDetail={handleShowingDetail}
-              />
-            )}
-            {doneQuestions && (
-              <QuestionsBoard
-                titleOfBoard="Done"
-                listOfQuestions={doneQuestions}
+                titleOfBoard={
+                  isAnsweredQuestion === true ? "Done" : "New Questions"
+                }
+                listOfQuestions={questions}
                 handleShowingDetail={handleShowingDetail}
               />
             )}

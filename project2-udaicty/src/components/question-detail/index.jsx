@@ -7,6 +7,7 @@ import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { useNavigate, useParams } from "react-router-dom";
 import { HOME_VALUE } from "../../pages/main";
+import AlertDialogSlide from "../dialog";
 
 const LoginWrapper = styled("div")({
   display: "inline-grid",
@@ -31,6 +32,7 @@ export default function QuestionDetails() {
   const navigate = useNavigate();
   const [isNotFound, setIsNotFound] = React.useState(false);
   const [question, setQuestion] = React.useState(false);
+
   const handleSaveQuestionAnswer = (answer) => {
     _saveQuestionAnswer({
       authedUser: loggedUser.id, // replace with the actual user ID
@@ -90,6 +92,12 @@ export default function QuestionDetails() {
       </LoginWrapper>
     </>
   ) : (
-    <h1>404 NOT FOUND</h1>
+    <AlertDialogSlide
+      open={isNotFound !== true}
+      handleClose={() => {
+        navigate("/login");
+      }}
+      content={"You should have to login first and try again "}
+    />
   );
 }
