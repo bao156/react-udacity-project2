@@ -28,7 +28,7 @@ const SubTitle = styled("p")({
   fontWeight: 700,
   fontSize: 20,
 });
-const LoginComponent = () => {
+const LoginComponent = ({ redirectUrl = HOME_VALUE }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [username, setUserName] = React.useState("");
@@ -85,7 +85,7 @@ const LoginComponent = () => {
           onClick={() => {
             if (listOfUsers[username]?.password === password) {
               dispatch(handleAddingLoggedInUser(listOfUsers[username]));
-              navigate(HOME_VALUE);
+              navigate(redirectUrl);
             }
           }}
         >

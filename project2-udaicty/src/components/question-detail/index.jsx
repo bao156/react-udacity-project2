@@ -5,10 +5,9 @@ import { _saveQuestionAnswer } from "../../_DATA";
 import QuestionOption from "../question-option";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { HOME_VALUE } from "../../pages/main";
-import AlertDialogSlide from "../dialog";
-
+import LoginComponent from "../../pages/login";
 const LoginWrapper = styled("div")({
   display: "inline-grid",
   gap: "25px",
@@ -32,7 +31,7 @@ export default function QuestionDetails() {
   const navigate = useNavigate();
   const [isNotFound, setIsNotFound] = React.useState(false);
   const [question, setQuestion] = React.useState(false);
-
+  const location = useLocation();
   const handleSaveQuestionAnswer = (answer) => {
     _saveQuestionAnswer({
       authedUser: loggedUser.id, // replace with the actual user ID
@@ -59,9 +58,11 @@ export default function QuestionDetails() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [question, listOfQuestion]);
 
-  return !isNotFound && question ? (
+  return !loggedUser ? (
+    <LoginComponent redirectUrl={location.pathname} />
+  ) : !isNotFound && question ? (
     <>
       <Title> Poll by {question.author}</Title>
       <Stack
@@ -92,12 +93,6 @@ export default function QuestionDetails() {
       </LoginWrapper>
     </>
   ) : (
-    <AlertDialogSlide
-      open={isNotFound !== true}
-      handleClose={() => {
-        navigate("/login");
-      }}
-      content={"You should have to login first and try again "}
-    />
+    <h1>404 NOT FOUND</h1>
   );
 }
