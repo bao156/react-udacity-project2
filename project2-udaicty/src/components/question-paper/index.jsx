@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import { styled } from "@mui/system";
 import * as React from "react";
-
+import PropTypes from "prop-types";
 const PaperWrapper = styled("div")({
   marginTop: "50px",
   backgroundColor: "white",
@@ -9,7 +9,7 @@ const PaperWrapper = styled("div")({
   width: "300px",
   borderRadius: "5px",
 });
-const SubTitle = styled("p")({
+const AuthorTitle = styled("p")({
   color: "black",
   marginBottom: 0,
   textAlign: "center",
@@ -21,11 +21,16 @@ const SubContent = styled("p")({
   fontSize: 12,
   textAlign: "center",
 });
-export default function PollPaper() {
+export default function QuestionPaper({
+  author,
+  time,
+  id,
+  handleShowingDetail,
+}) {
   return (
     <PaperWrapper>
-      <SubTitle>Mirajane</SubTitle>
-      <SubContent>10:21PM | 11/23/2021</SubContent>
+      <AuthorTitle>{author}</AuthorTitle>
+      <SubContent>{time}</SubContent>
       <Button
         sx={{
           color: "green",
@@ -34,9 +39,15 @@ export default function PollPaper() {
           margin: "20px",
         }}
         variant="outlined"
+        onClick={() => handleShowingDetail(id)}
       >
         Show
       </Button>
     </PaperWrapper>
   );
 }
+
+QuestionPaper.propTypes = {
+  author: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+};

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import logo from "../logo.svg";
 import { handleAddingLoggedInUser } from "../store/actions/loggedInUser";
 import { fetchAllUser } from "../store/actions/users";
+import { fetchAllQuestions } from "../store/actions/questions";
+import { HOME_VALUE } from "./main";
 
 const LoginWrapper = styled("div")({
   display: "inline-grid",
@@ -38,6 +40,7 @@ const LoginComponent = () => {
     function getListOfUser() {
       if (!isMounted) {
         dispatch(fetchAllUser());
+        dispatch(fetchAllQuestions());
       }
     }
     getListOfUser();
@@ -82,7 +85,7 @@ const LoginComponent = () => {
           onClick={() => {
             if (listOfUsers[username]?.password === password) {
               dispatch(handleAddingLoggedInUser(listOfUsers[username]));
-              navigate("/main");
+              navigate(HOME_VALUE);
             }
           }}
         >

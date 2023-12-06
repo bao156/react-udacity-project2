@@ -1,3 +1,31 @@
+# Getting Started with Create React App
+
+Download zip file `react-udacity-project2.zip` and extract to get source.
+
+## Available Scripts
+
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the app in the development mode.
+Open [http://localhost:3000/login](http://localhost:3000/login) to login and enjoy.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+### `npm start test`
+
+The application requires only npm start test in order to run all the unit tests in the project.
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
 # Employee Polls Project
 
 This is the starter code for the final assessment project for Udacity's React & Redux course.
